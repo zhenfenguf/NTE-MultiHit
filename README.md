@@ -37,21 +37,27 @@
 
 ### 2. 放入插件目录
 
-把 `plugin.dll` 与 `manifest.json` 放进 Anomaly 的插件目录。目录位置可在宿主目录下的
-`anomaly.ini` 里查看：
-
-```ini
-[Platform]
-PluginDirectory=C:\Users\<你的用户名>\AnomalyPlugins
-```
-
-放好后目录结构应为：
+宿主默认从 **`<游戏目录>\HT\Binaries\Win64\Anomaly\plugins\`** 加载插件 —— 也就是
+`HTGame.exe` 同级目录下的 `Anomaly\plugins`。把整个 `MultiHit-1.0.0` 文件夹放进去即可：
 
 ```text
-AnomalyPlugins\MultiHit-1.0.0\
-  manifest.json
-  plugin.dll
+<游戏目录>\HT\Binaries\Win64\Anomaly\plugins\
+  MultiHit-1.0.0\
+    manifest.json
+    plugin.dll
+    （其余文件可选，宿主只按 manifest 里声明的 entry 找 dll）
 ```
+
+> **这个位置可以改。** 宿主目录下的 `anomaly.ini` 用 `[Platform] PluginDirectory` 指定插件目录：
+> 写**绝对路径**时直接采用，写相对路径（默认值就是 `plugins`）时以 `Anomaly` 目录为基准。
+>
+> ```ini
+> [Platform]
+> PluginDirectory=C:\Users\<你的用户名>\AnomalyPlugins
+> ```
+>
+> 把插件目录放到用户可写的位置，就不必每次写游戏安装目录都提管理员权限。
+> ⚠️ 但**同时只会加载这一个目录** —— 改掉之后，原先放在 `Anomaly\plugins` 里的插件就不再生效了。
 
 ### 3. ⚠️ 在 Profile 里登记两个符号（**必做，否则插件不会工作**）
 
@@ -98,6 +104,9 @@ AnomalyPlugins\MultiHit-1.0.0\
 ### 4. 启用
 
 进游戏 → 按 `Insert` 呼出 Anomaly 界面 → **Plugins** → 找到「多重打击」→ 启用。
+
+> 启用状态记在 `<游戏目录>\Anomaly\config\plugin-enablement.json` 里，按插件 ID
+> （`anomaly.builtin.multi-hit-mini`）记录，所以给插件文件夹改个名字不会丢启用状态。
 
 ---
 
